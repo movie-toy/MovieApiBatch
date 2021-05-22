@@ -17,7 +17,7 @@ import java.util.Calendar;
 @Component
 @RequiredArgsConstructor
 public class BoxOfficeApi {
-    //발급키키
+    //발급키
     String key = "f778bea14d8ca8349bc583598d1288e9";
     String dailyResponse = "";
 
