@@ -15,11 +15,14 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Movie {
+public class WeeklyMovie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+    private String boxofficeType;
+    private String showRange;
+    private String yearWeekTime;
     private String rnum;
     private String rank;
     private String rankInten;

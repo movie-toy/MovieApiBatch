@@ -1,8 +1,10 @@
 package com.movietoy.batch.movietoybatch.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movietoy.batch.movietoybatch.domain.Movie;
-import com.movietoy.batch.movietoybatch.domain.MovieRepository;
+import com.movietoy.batch.movietoybatch.domain.DailyMovie;
+import com.movietoy.batch.movietoybatch.domain.DailyMovieRepository;
+import com.movietoy.batch.movietoybatch.domain.WeeklyMovie;
+import com.movietoy.batch.movietoybatch.domain.WeeklyMovieRepository;
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -10,35 +12,34 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.format.DateTimeFormatter;
 
 @Component
 @RequiredArgsConstructor
 public class BoxOfficeApi {
     //발급키
     String key = "f778bea14d8ca8349bc583598d1288e9";
-    String dailyResponse = "";
 
-    private final MovieRepository movieRepository;
+    private final DailyMovieRepository dailyMovieRepository;
+    private final WeeklyMovieRepository weeklyMovieRepository;
 
-    public void dailyBoxOfficeApi(){
-
-        //일자 포맷 맞추기
-        SimpleDateFormat todayFormat = new SimpleDateFormat("yyyyMMdd");
+    public void dailyBoxOffice(){
+        String dailyResponse = "";
 
         //전날 박스오피스 조회 ( 오늘 날짜꺼는 안나옴.. )
-        Calendar day = Calendar.getInstance();
-        day.add(Calendar.DATE , -1);
-        //조회 날짜
-        String targetDt = todayFormat.format(day.getTime());
+        LocalDateTime time = LocalDateTime.now().minusDays(1);
+        String targetDt =  time.format(DateTimeFormatter.ofPattern("yyyMMdd"));
+
         //ROW 개수
         String itemPerPage = "10";
+
         //다양성영화(Y)/상업영화(N)/전체(default)
         String multiMovieYn = "";
+
         //한국영화(K)/외국영화(F)/전체(default)
         String repNationCd = "";
+
         //상영지역별 코드/전체(default)
         String wideAreaCd = "";
 
@@ -72,9 +73,82 @@ public class BoxOfficeApi {
             for(int i=0; i<parse_dailyBoxOfficeList.size(); i++){
                 JSONObject dailyBoxOffice = (JSONObject) parse_dailyBoxOfficeList.get(i);
                 //JSON object -> Java Object(Entity) 변환
-                Movie movie = objectMapper.readValue(dailyBoxOffice.toString(), Movie.class);
+                DailyMovie dailyMovie = objectMapper.readValue(dailyBoxOffice.toString(), DailyMovie.class);
                 //DB저장
-                movieRepository.save(movie);
+                dailyMovie.setBoxofficeType(boxofficeType);
+                dailyMovie.setShowRange(showRange);
+                dailyMovieRepository.save(dailyMovie);
+            }
+        }catch(Exception e){
+            e.getMessage();
+        }
+
+    }
+
+    public void weeklyBoxOffice(){
+        String weeklyResponse = "";
+
+        //전주 박스오피스 조회 ( 해당주는 안나옴.. )
+        LocalDateTime time = LocalDateTime.now().minusDays(7);
+        String targetDt =  time.format(DateTimeFormatter.ofPattern("yyyMMdd"));
+
+        //주간/주말/주중 선택
+        String weekGb = "0";
+
+        //ROW 개수
+        String itemPerPage = "10";
+
+        //다양성영화(Y)/상업영화(N)/전체(default)
+        String multiMovieYn = "";
+
+        //한국영화(K)/외국영화(F)/전체(default)
+        String repNationCd = "";
+
+        //상영지역별 코드/전체(default)
+        String wideAreaCd = "";
+
+        try {
+            // KOBIS 오픈 API Rest Client를 통해 호출
+            KobisOpenAPIRestService service = new KobisOpenAPIRestService(key);
+
+            // 일일 박스오피스 서비스 호출 (boolean isJson, String targetDt, String itemPerPage, String weekGb, String multiMovieYn, String repNationCd, String wideAreaCd)
+            weeklyResponse = service.getWeeklyBoxOffice(true, targetDt, itemPerPage, weekGb, multiMovieYn, repNationCd, wideAreaCd);
+
+            //JSON Parser 객체 생성
+            JSONParser jsonParser = new JSONParser();
+
+            //Parser로 문자열 데이터를 객체로 변환
+            Object obj = jsonParser.parse(weeklyResponse);
+
+            //파싱한 obj를 JSONObject 객체로 변환
+            JSONObject jsonObject = (JSONObject) obj;
+
+            //차근차근 parsing하기
+            JSONObject parse_boxOfficeResult = (JSONObject) jsonObject.get("boxOfficeResult");
+
+            //박스오피스 종류
+            String boxofficeType = (String) parse_boxOfficeResult.get("boxofficeType");
+
+
+            //박스오피스 조회 일자
+            String showRange = (String) parse_boxOfficeResult.get("showRange");
+
+
+            //박스오피스 조회 일자
+            String yearWeekTime = (String) parse_boxOfficeResult.get("yearWeekTime");
+
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JSONArray parse_weeklyBoxOfficeList = (JSONArray) parse_boxOfficeResult.get("weeklyBoxOfficeList");
+            for(int i=0; i<parse_weeklyBoxOfficeList.size(); i++){
+                JSONObject weeklyBoxOffice = (JSONObject) parse_weeklyBoxOfficeList.get(i);
+                //JSON object -> Java Object(Entity) 변환
+                WeeklyMovie weeklyMovie = objectMapper.readValue(weeklyBoxOffice.toString(), WeeklyMovie.class);
+                //DB저장
+                weeklyMovie.setBoxofficeType(boxofficeType);
+                weeklyMovie.setShowRange(showRange);
+                weeklyMovie.setYearWeekTime(yearWeekTime);
+                weeklyMovieRepository.save(weeklyMovie);
             }
         }catch(Exception e){
             e.getMessage();

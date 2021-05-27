@@ -11,7 +11,11 @@ public class BoxOfficeApiService {
     private final BoxOfficeApi boxOfficeApi;
 
     public void insertDailyBoxOffice(){
-        boxOfficeApi.dailyBoxOfficeApi();
+        boxOfficeApi.dailyBoxOffice();
+    }
+
+    public void insertWeeklyBoxOffice(){
+        boxOfficeApi.weeklyBoxOffice();
     }
 
 }
