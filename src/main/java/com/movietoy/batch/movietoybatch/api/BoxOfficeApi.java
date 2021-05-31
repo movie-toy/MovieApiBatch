@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +26,10 @@ public class BoxOfficeApi {
     private final DailyMovieRepository dailyMovieRepository;
     private final WeeklyMovieRepository weeklyMovieRepository;
 
-    public void dailyBoxOffice(){
+    public List<DailyMovie> dailyBoxOffice(){
+
+        List<DailyMovie> dailyBoxOfficeList = new ArrayList<>(); //Rest로 가져온 데이터를 리스트에 넣는다.
+
         String dailyResponse = "";
 
         //전날 박스오피스 조회 ( 오늘 날짜꺼는 안나옴.. )
@@ -77,15 +82,19 @@ public class BoxOfficeApi {
                 //DB저장
                 dailyMovie.setBoxofficeType(boxofficeType);
                 dailyMovie.setShowRange(showRange);
-                dailyMovieRepository.save(dailyMovie);
+                dailyBoxOfficeList.add(dailyMovie);
+                //dailyMovieRepository.save(dailyMovie);
             }
         }catch(Exception e){
             e.getMessage();
         }
-
+        return dailyBoxOfficeList;
     }
 
-    public void weeklyBoxOffice(){
+    public List<WeeklyMovie> weeklyBoxOffice(){
+
+        List<WeeklyMovie> weeklyBoxOfficeList = new ArrayList<>(); //Rest로 가져온 데이터를 리스트에 넣는다.
+
         String weeklyResponse = "";
 
         //전주 박스오피스 조회 ( 해당주는 안나옴.. )
@@ -148,10 +157,12 @@ public class BoxOfficeApi {
                 weeklyMovie.setBoxofficeType(boxofficeType);
                 weeklyMovie.setShowRange(showRange);
                 weeklyMovie.setYearWeekTime(yearWeekTime);
-                weeklyMovieRepository.save(weeklyMovie);
+                weeklyBoxOfficeList.add(weeklyMovie);
+                //weeklyMovieRepository.save(weeklyMovie);
             }
         }catch(Exception e){
             e.getMessage();
         }
+        return weeklyBoxOfficeList;
     }
 }

@@ -2,13 +2,13 @@ spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://27.96.130.90:3306/spring_batch
+      jdbc-url: jdbc:mysql://27.96.130.90:3306/Movie_Toy
       username: root
       password: Toyproject1!
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: false
