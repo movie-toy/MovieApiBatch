@@ -3,7 +3,6 @@ package com.movietoy.batch.movietoybatch.job;
 
 import com.movietoy.batch.movietoybatch.api.BoxOfficeApi;
 import com.movietoy.batch.movietoybatch.domain.DailyMovie;
-import com.movietoy.batch.movietoybatch.service.BoxOfficeApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
-import javax.swing.*;
 import java.util.List;
 
 @Slf4j

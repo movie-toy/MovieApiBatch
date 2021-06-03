@@ -1,8 +1,7 @@
 package com.movietoy.batch.movietoybatch.job;
 
-
-import com.movietoy.batch.movietoybatch.api.BoxOfficeApi;
-import com.movietoy.batch.movietoybatch.domain.WeeklyMovie;
+import com.movietoy.batch.movietoybatch.api.MovieApi;
+import com.movietoy.batch.movietoybatch.domain.MovieList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -12,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,42 +21,41 @@ import java.util.List;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class WeeklyBoxOfficeJobConfig {
+public class MovieListJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
-    private final BoxOfficeApi boxOfficeApi;
-    private static final int CHUNKSIZE = 5;
+    private final MovieApi movieApi;
+    private static final int CHUNKSIZE = 5; //쓰기 단위인 청크사이즈
 
     @Bean
-    public Job weeklyBoxOfficeJob(){
-        log.info("weeklyBoxOfficeJob Start!!!");
-        return jobBuilderFactory.get("weeklyBoxOfficeJob")
-                .start(weeklyBoxOfficeStep())
+    public Job movieListJob(){
+        return jobBuilderFactory.get("movieListJob")
+                .start(movieListStep())
                 .build();
     }
 
     @Bean
-    public Step weeklyBoxOfficeStep() {
-        log.info("weeklyBoxOfficeStep Start!!!");
-        return stepBuilderFactory.get("weeklyBoxOfficeStep")
-                .<WeeklyMovie, WeeklyMovie>chunk(CHUNKSIZE)
-                .reader(weeklyBoxOfficeReader())
-                .writer(weeklyBoxOfficeWriter())
+    public Step movieListStep(){
+        return stepBuilderFactory.get("movieListStep")
+                .<MovieList, MovieList>chunk(CHUNKSIZE)
+                .reader(movieListReader(null))
+                .writer(movieListWriter())
                 .build();
     }
 
     @Bean
     @StepScope
-    public ListItemReader<WeeklyMovie> weeklyBoxOfficeReader() {
-        List<WeeklyMovie> weeklyMovie = boxOfficeApi.weeklyBoxOffice();
-        return new ListItemReader<>(weeklyMovie);
+    public ListItemReader<MovieList> movieListReader(@Value("#{jobParameters[index]}") String index) {
+        log.info("############################# index : " + index+"#########################################");
+        List<MovieList> movieList = movieApi.movieList(index);
+        return new ListItemReader<>(movieList);
     }
 
     @Bean
-    public JpaItemWriter<WeeklyMovie> weeklyBoxOfficeWriter(){
-        JpaItemWriter<WeeklyMovie> jpaItemWriter = new JpaItemWriter<>();
+    public JpaItemWriter<MovieList> movieListWriter(){
+        JpaItemWriter<MovieList> jpaItemWriter = new JpaItemWriter<>();
         jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
         return jpaItemWriter;
     }

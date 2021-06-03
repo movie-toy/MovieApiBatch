@@ -2,11 +2,8 @@ package com.movietoy.batch.movietoybatch.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietoy.batch.movietoybatch.domain.DailyMovie;
-import com.movietoy.batch.movietoybatch.domain.DailyMovieRepository;
 import com.movietoy.batch.movietoybatch.domain.WeeklyMovie;
-import com.movietoy.batch.movietoybatch.domain.WeeklyMovieRepository;
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
-import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,13 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class BoxOfficeApi {
     //발급키
     String key = "f778bea14d8ca8349bc583598d1288e9";
-
-    private final DailyMovieRepository dailyMovieRepository;
-    private final WeeklyMovieRepository weeklyMovieRepository;
 
     public List<DailyMovie> dailyBoxOffice(){
 
@@ -80,6 +73,7 @@ public class BoxOfficeApi {
                 //JSON object -> Java Object(Entity) 변환
                 DailyMovie dailyMovie = objectMapper.readValue(dailyBoxOffice.toString(), DailyMovie.class);
                 //DB저장
+                dailyMovie.setTargetDt(targetDt);
                 dailyMovie.setBoxofficeType(boxofficeType);
                 dailyMovie.setShowRange(showRange);
                 dailyBoxOfficeList.add(dailyMovie);
@@ -154,6 +148,7 @@ public class BoxOfficeApi {
                 //JSON object -> Java Object(Entity) 변환
                 WeeklyMovie weeklyMovie = objectMapper.readValue(weeklyBoxOffice.toString(), WeeklyMovie.class);
                 //DB저장
+                weeklyMovie.setTargetDt(targetDt);
                 weeklyMovie.setBoxofficeType(boxofficeType);
                 weeklyMovie.setShowRange(showRange);
                 weeklyMovie.setYearWeekTime(yearWeekTime);
