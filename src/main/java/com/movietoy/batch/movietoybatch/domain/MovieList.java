@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -31,6 +28,7 @@ public class MovieList {
     private String genreAlt;
     private String repNationNm;
     private String repGenreNm;
+    @Column(length = 1000)
     private String directors;
     private String companys;
 }

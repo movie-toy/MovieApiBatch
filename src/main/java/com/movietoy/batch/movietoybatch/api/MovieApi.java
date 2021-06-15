@@ -124,7 +124,6 @@ public class MovieApi {
                 }
                 //JSON object -> Java Object(Entity) 변환
                 MovieList movieList = objectMapper.readValue(movieListResultObject.toString(), MovieList.class);
-                //movieListRepository.save(movieList);
                 allMovieList.add(movieList);
             }
 

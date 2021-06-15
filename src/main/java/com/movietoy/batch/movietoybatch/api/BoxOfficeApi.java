@@ -77,7 +77,6 @@ public class BoxOfficeApi {
                 dailyMovie.setBoxofficeType(boxofficeType);
                 dailyMovie.setShowRange(showRange);
                 dailyBoxOfficeList.add(dailyMovie);
-                //dailyMovieRepository.save(dailyMovie);
             }
         }catch(Exception e){
             e.getMessage();
@@ -132,14 +131,11 @@ public class BoxOfficeApi {
             //박스오피스 종류
             String boxofficeType = (String) parse_boxOfficeResult.get("boxofficeType");
 
-
             //박스오피스 조회 일자
             String showRange = (String) parse_boxOfficeResult.get("showRange");
 
-
             //박스오피스 조회 일자
             String yearWeekTime = (String) parse_boxOfficeResult.get("yearWeekTime");
-
 
             ObjectMapper objectMapper = new ObjectMapper();
             JSONArray parse_weeklyBoxOfficeList = (JSONArray) parse_boxOfficeResult.get("weeklyBoxOfficeList");
@@ -153,7 +149,6 @@ public class BoxOfficeApi {
                 weeklyMovie.setShowRange(showRange);
                 weeklyMovie.setYearWeekTime(yearWeekTime);
                 weeklyBoxOfficeList.add(weeklyMovie);
-                //weeklyMovieRepository.save(weeklyMovie);
             }
         }catch(Exception e){
             e.getMessage();
