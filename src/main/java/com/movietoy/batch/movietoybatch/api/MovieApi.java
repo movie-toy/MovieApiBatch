@@ -1,6 +1,7 @@
 package com.movietoy.batch.movietoybatch.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movietoy.batch.movietoybatch.domain.MovieInfo;
 import com.movietoy.batch.movietoybatch.domain.MovieList;
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import org.json.simple.JSONArray;
@@ -21,9 +22,6 @@ public class MovieApi {
     public List<MovieList> movieList(String index){
 
         List<MovieList> allMovieList = new ArrayList<>();
-
-        //발급키키
-        String key = "f778bea14d8ca8349bc583598d1288e9";
 
         String movieListResponse = "";
 
@@ -131,5 +129,54 @@ public class MovieApi {
             e.getMessage();
         }
         return allMovieList;
+    }
+
+
+    public void movieInfo(String MovieCd){
+
+        String movieInfoResponse = "";
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("MovieCd",MovieCd);
+
+        try {
+            // KOBIS 오픈 API Rest Client를 통해 호출
+            KobisOpenAPIRestService service = new KobisOpenAPIRestService(key);
+            movieInfoResponse = service.getMovieInfo(true, paramMap);
+
+            //JSON Parser 객체 생성
+            JSONParser jsonParser = new JSONParser();
+
+            //Parser로 문자열 데이터를 객체로 변환
+            Object obj = jsonParser.parse(movieInfoResponse);
+
+            //파싱한 obj를 JSONObject 객체로 변환
+            JSONObject jsonObject = (JSONObject) obj;
+
+            //차근차근 parsing하기
+            JSONObject parse_movieInfoResult = (JSONObject) jsonObject.get("movieInfoResult");
+
+            //영화 정보
+            JSONObject parse_movieInfo = (JSONObject) parse_movieInfoResult.get("movieInfo");
+
+            //영화 코드
+            String movieCd = (String) parse_movieInfo.get("movieCd");
+
+            //영화 한글명
+            String movieNm = (String) parse_movieInfo.get("movieNm");
+
+            //영화 영문명
+            String movieEn = (String) parse_movieInfo.get("movieEn");
+
+            //영화 원문명
+            String movieOg = (String) parse_movieInfo.get("movieOg");
+
+            //제작연도
+            String prdtYear = (String) parse_movieInfo.get("prdtYear");
+
+
+        }catch(Exception e){
+            e.getMessage();
+        }
     }
 }
