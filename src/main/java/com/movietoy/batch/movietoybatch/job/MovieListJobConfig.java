@@ -49,7 +49,6 @@ public class MovieListJobConfig {
     @Bean
     public ListItemReader<MovieList> movieListReader() {
         List<MovieList> movieList = movieApiService.selectAllMovieList();
-        log.info("movieList size"+movieList.size());
         return new ListItemReader<>(movieList);
     }
 
