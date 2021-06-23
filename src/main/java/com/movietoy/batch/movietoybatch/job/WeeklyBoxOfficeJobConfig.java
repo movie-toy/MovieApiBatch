@@ -3,6 +3,7 @@ package com.movietoy.batch.movietoybatch.job;
 
 import com.movietoy.batch.movietoybatch.api.BoxOfficeApi;
 import com.movietoy.batch.movietoybatch.domain.WeeklyMovie;
+import com.movietoy.batch.movietoybatch.service.BoxOfficeApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -26,7 +27,7 @@ public class WeeklyBoxOfficeJobConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
-    private final BoxOfficeApi boxOfficeApi;
+    private final BoxOfficeApiService boxOfficeApiService;
     private static final int CHUNKSIZE = 5;
 
     @Bean
@@ -48,9 +49,8 @@ public class WeeklyBoxOfficeJobConfig {
     }
 
     @Bean
-    @StepScope
     public ListItemReader<WeeklyMovie> weeklyBoxOfficeReader() {
-        List<WeeklyMovie> weeklyMovie = boxOfficeApi.weeklyBoxOffice();
+        List<WeeklyMovie> weeklyMovie = boxOfficeApiService.insertWeeklyBoxOffice();
         return new ListItemReader<>(weeklyMovie);
     }
 
