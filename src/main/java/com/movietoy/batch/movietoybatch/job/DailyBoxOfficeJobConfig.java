@@ -3,6 +3,7 @@ package com.movietoy.batch.movietoybatch.job;
 
 import com.movietoy.batch.movietoybatch.api.BoxOfficeApi;
 import com.movietoy.batch.movietoybatch.domain.DailyMovie;
+import com.movietoy.batch.movietoybatch.service.BoxOfficeApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -26,7 +27,7 @@ public class DailyBoxOfficeJobConfig {
     private final JobBuilderFactory jobBuilderFactory;  //Job 빌더 생성용
     private final StepBuilderFactory stepBuilderFactory; //Step 빌더 생성용
     private final EntityManagerFactory entityManagerFactory;
-    private final BoxOfficeApi boxOfficeApi;
+    private final BoxOfficeApiService boxOfficeApiService;
     private static final int CHUNKSIZE = 5; //쓰기 단위인 청크사이즈
 
 
@@ -65,9 +66,8 @@ public class DailyBoxOfficeJobConfig {
     }
 
     @Bean
-    @StepScope
     public ListItemReader<DailyMovie> dailyBoxOfficeReader() {
-        List<DailyMovie> dailyMovie = boxOfficeApi.dailyBoxOffice();
+        List<DailyMovie> dailyMovie = boxOfficeApiService.insertDailyBoxOffice();
         return new ListItemReader<>(dailyMovie);
     }
 
