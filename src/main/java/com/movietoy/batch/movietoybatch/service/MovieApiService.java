@@ -20,6 +20,7 @@ public class MovieApiService {
         List<MovieList> movieLists = new ArrayList<>();
         int num=1;
         while(true){
+            log.info("========================="+num+"============================");
             List<MovieList> movieList = movieApi.movieList(Integer.toString(num));
             if(movieList.size() == 0) break;
             movieLists.addAll(movieList);

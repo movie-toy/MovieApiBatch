@@ -32,7 +32,7 @@ public class SchedulerController {
     //    초  분  시  일  월  요일 연도(생략가능)
     //ex) 0  1   1   10  *   *  -> 매월 10일 01시 01분에 실행
     //ex  0  0   14  *   *   *  -> 매일 14시에 실행
-    @Scheduled(cron ="0 0 1 * * *") //매일 01시에 실행
+    //@Scheduled(cron ="0 0 1 * * *") //매일 01시에 실행
     public void executeDailyJob () {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
@@ -48,7 +48,7 @@ public class SchedulerController {
         }
     }
 
-    @Scheduled(cron ="0 0 1 * * MON") //매주 월요일 01시에 실행
+    //@Scheduled(cron ="0 0 1 * * MON") //매주 월요일 01시에 실행
     public void executeWeeklyJob () {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
@@ -64,7 +64,7 @@ public class SchedulerController {
         }
     }
 
-    @Scheduled(cron ="0 0 1 * * MON") //매주 월요일 01시에 실행
+    //@Scheduled(cron ="0 0 1 * * MON") //매주 월요일 01시에 실행
     public void executeMovieListJob () {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
