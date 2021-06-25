@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietoy.batch.movietoybatch.domain.MovieInfo;
 import com.movietoy.batch.movietoybatch.domain.MovieList;
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Slf4j
 @Component
 public class MovieApi {
     //발급키
@@ -132,16 +135,19 @@ public class MovieApi {
     }
 
 
-    public void movieInfo(String MovieCd){
+    public MovieInfo movieInfo(String MovieCd){
+
+        MovieInfo movieInfo = null;
 
         String movieInfoResponse = "";
 
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("MovieCd",MovieCd);
+        paramMap.put("movieCd",MovieCd);
 
         try {
             // KOBIS 오픈 API Rest Client를 통해 호출
             KobisOpenAPIRestService service = new KobisOpenAPIRestService(key);
+
             movieInfoResponse = service.getMovieInfo(true, paramMap);
 
             //JSON Parser 객체 생성
@@ -153,6 +159,12 @@ public class MovieApi {
             //파싱한 obj를 JSONObject 객체로 변환
             JSONObject jsonObject = (JSONObject) obj;
 
+            //JSON object -> Java Object(Entity) 변환하기위한 Mapper 선언
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            //새로운 JSONObject 선언
+            JSONObject movieInfoResultObject = new JSONObject();
+
             //차근차근 parsing하기
             JSONObject parse_movieInfoResult = (JSONObject) jsonObject.get("movieInfoResult");
 
@@ -161,22 +173,45 @@ public class MovieApi {
 
             //영화 코드
             String movieCd = (String) parse_movieInfo.get("movieCd");
+            movieInfoResultObject.put("movieCd", movieCd);
 
             //영화 한글명
             String movieNm = (String) parse_movieInfo.get("movieNm");
+            movieInfoResultObject.put("movieNm", movieNm);
 
             //영화 영문명
-            String movieEn = (String) parse_movieInfo.get("movieEn");
+            String movieNmEn = (String) parse_movieInfo.get("movieNmEn");
+            movieInfoResultObject.put("movieNmEn", movieNmEn);
 
             //영화 원문명
-            String movieOg = (String) parse_movieInfo.get("movieOg");
+            String movieNmOg = (String) parse_movieInfo.get("movieNmOg");
+            movieInfoResultObject.put("movieNmOg", movieNmOg);
 
             //제작연도
             String prdtYear = (String) parse_movieInfo.get("prdtYear");
+            movieInfoResultObject.put("prdtYear", prdtYear);
 
+            //오픈일자
+            String openDt = (String) parse_movieInfo.get("openDt");
+            movieInfoResultObject.put("openDt", openDt);
+
+            //제작상태
+            String prdtStatNm = (String) parse_movieInfo.get("prdtStatNm");
+            movieInfoResultObject.put("prdtStatNm", prdtStatNm);
+
+            //영화유형
+            String typeNm = (String) parse_movieInfo.get("typeNm");
+            movieInfoResultObject.put("typeNm", typeNm);
+
+
+            //JSON object -> Java Object(Entity) 변환
+            movieInfo = objectMapper.readValue(movieInfoResultObject.toString(), MovieInfo.class);
 
         }catch(Exception e){
             e.getMessage();
         }
+
+        return movieInfo;
+
     }
 }
