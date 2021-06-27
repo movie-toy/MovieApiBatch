@@ -31,4 +31,5 @@ public class MovieList {
     @Column(length = 1000)
     private String directors;
     private String companys;
+    private String batchStatus;
 }
