@@ -20,7 +20,16 @@ import java.util.Map;
 @Component
 public class MovieApi {
     //발급키
-    String key = "f778bea14d8ca8349bc583598d1288e9";
+    public static String key = "aa70b0701d04d2ab017306b706c486d8";
+
+    public static String getKey() {
+        return key;
+    }
+
+    public static void setKey(String key) {
+        MovieApi.key = key;
+    }
+
 
     public List<MovieList> movieList(String index){
 
@@ -102,27 +111,13 @@ public class MovieApi {
                 movieListResultObject.put("genreAlt", genreAlt);
 
                 //영화감독(directors) Array 추출
-                StringBuilder directorsList = new StringBuilder();
                 JSONArray parse_directorsList = (JSONArray) movieListObject.get("directors");
-                for (int j = 0; j < parse_directorsList.size(); j++) {
-                    JSONObject directorsListObject = (JSONObject) parse_directorsList.get(j);
-                    String directors = (String) directorsListObject.get("peopleNm");
-                    if(j>0)directorsList.append(", ");
-                    directorsList.append(directors);
-                    movieListResultObject.put("directors", directorsList.toString());
-                }
+                movieListResultObject.put("directors", parse_directorsList.toString());
 
                 //제작사(companys) Array 추출
-                //제작사 코드 빼고 제작사명만 넣는다.
-                StringBuilder companysList = new StringBuilder();
                 JSONArray parse_companysList = (JSONArray) movieListObject.get("companys");
-                for (int k = 0; k < parse_companysList.size(); k++) {
-                    JSONObject companysListObject = (JSONObject) parse_companysList.get(k);
-                    String companyNm = (String) companysListObject.get("companyNm");
-                    if(k>0) companysList.append(",");
-                    companysList.append(companyNm);
-                    movieListResultObject.put("companys", companysList.toString());
-                }
+                movieListResultObject.put("companys", parse_companysList.toString());
+
                 //JSON object -> Java Object(Entity) 변환
                 MovieList movieList = objectMapper.readValue(movieListResultObject.toString(), MovieList.class);
                 allMovieList.add(movieList);
@@ -203,6 +198,29 @@ public class MovieApi {
             String typeNm = (String) parse_movieInfo.get("typeNm");
             movieInfoResultObject.put("typeNm", typeNm);
 
+            //국가(nations) Array 추출
+            JSONArray parse_nationsList = (JSONArray) parse_movieInfo.get("nations");
+            movieInfoResultObject.put("nations", parse_nationsList.toString());
+
+            //장르(genres) Array 추출
+            JSONArray parse_genresList = (JSONArray) parse_movieInfo.get("genres");
+            movieInfoResultObject.put("genres", parse_genresList.toString());
+
+            //영화감독(directors) Array 추출
+            JSONArray parse_directorsList = (JSONArray) parse_movieInfo.get("directors");
+            movieInfoResultObject.put("directors", parse_directorsList.toString());
+
+            //배우(actors) Array 추출
+            JSONArray parse_actorsList = (JSONArray) parse_movieInfo.get("actors");
+            movieInfoResultObject.put("actors", parse_actorsList.toString());
+
+            //영화사(companys) Array 추출
+            JSONArray parse_companysList = (JSONArray) parse_movieInfo.get("companys");
+            movieInfoResultObject.put("companys", parse_companysList.toString());
+
+            //심의정보(audits) Array 추출
+            JSONArray parse_auditsList = (JSONArray) parse_movieInfo.get("audits");
+            movieInfoResultObject.put("audits", parse_auditsList.toString());
 
             //JSON object -> Java Object(Entity) 변환
             movieInfo = objectMapper.readValue(movieInfoResultObject.toString(), MovieInfo.class);

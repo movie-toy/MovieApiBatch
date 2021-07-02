@@ -2,6 +2,7 @@ package com.movietoy.batch.movietoybatch.job;
 
 import com.movietoy.batch.movietoybatch.domain.MovieInfo;
 import com.movietoy.batch.movietoybatch.domain.MovieInfoRepository;
+import com.movietoy.batch.movietoybatch.domain.MovieList;
 import com.movietoy.batch.movietoybatch.service.MovieApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
@@ -55,24 +57,30 @@ public class MovieInfoConfig {
                 .name("movieInfoReader")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(CHUNKSIZE)
-                .queryString("SELECT m.movieCd FROM MovieList m")
+                .queryString("SELECT m.movieCd FROM MovieList m WHERE batchStatus = 'N' and Id <= 10000")
                 .build();
 
     }
 
     @Bean
     public ItemProcessor<String, MovieInfo> movieInfoProcessor() {
-        return movieCd -> {
-            return movieApiService.selectMovieInfo(movieCd);
-        };
+        return movieCd -> movieApiService.selectMovieInfo(movieCd);
     }
 
+
     @Bean
-    public ItemWriter<MovieInfo> movieInfoWriter() {
-        return movieInfo -> {
-            movieInfoRepository.saveAll(movieInfo);
-        };
+    public JpaItemWriter<MovieInfo> movieInfoWriter(){
+        JpaItemWriter<MovieInfo> jpaItemWriter = new JpaItemWriter<>();
+        jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+        return jpaItemWriter;
     }
+
+//    @Bean
+//    public ItemWriter<MovieInfo> movieInfoWriter() {
+//        return movieInfo -> {
+//            movieInfoRepository.saveAll(movieInfo);
+//        };
+//    }
 
 
 
