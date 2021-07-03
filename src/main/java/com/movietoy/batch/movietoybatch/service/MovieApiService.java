@@ -49,11 +49,13 @@ public class MovieApiService {
             } else if (movieApi.getKey().equals("6b52eea1663b4710d8589939f0097554")) {
                 movieApi.setKey("ac4b5031aa97be6f4c74686ce6b4fbf5");
             }
+            return null;
+        }else{
+            movieList.setBatchStatus("Y");
+            movieListRepository.save(movieList);
+            return movieInfo;
         }
-        movieList.setBatchStatus("Y");
-        movieListRepository.save(movieList);
 
-        return movieInfo;
     }
 
 }
