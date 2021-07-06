@@ -48,6 +48,9 @@ public class MovieApiService {
             //홍제 키 -> 상인 키2
             } else if (movieApi.getKey().equals("6b52eea1663b4710d8589939f0097554")) {
                 movieApi.setKey("ac4b5031aa97be6f4c74686ce6b4fbf5");
+            //상인 키2 -> 호진 키2
+            } else if (movieApi.getKey().equals("ac4b5031aa97be6f4c74686ce6b4fbf5")) {
+                movieApi.setKey("e396c6dfac8b425d0590a2c4d9b822a7");
             }
             return null;
         }else{

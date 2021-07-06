@@ -57,7 +57,7 @@ public class MovieInfoConfig {
                 .name("movieInfoReader")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(CHUNKSIZE)
-                .queryString("SELECT m.movieCd FROM MovieList m WHERE batchStatus = 'N'")
+                .queryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus = 'N' and m.id <= 10000")
                 .build();
 
     }
