@@ -32,7 +32,6 @@ public class WeeklyBoxOfficeJobConfig {
 
     @Bean
     public Job weeklyBoxOfficeJob(){
-        log.info("weeklyBoxOfficeJob Start!!!");
         return jobBuilderFactory.get("weeklyBoxOfficeJob")
                 .start(weeklyBoxOfficeStep())
                 .build();
@@ -40,7 +39,6 @@ public class WeeklyBoxOfficeJobConfig {
 
     @Bean
     public Step weeklyBoxOfficeStep() {
-        log.info("weeklyBoxOfficeStep Start!!!");
         return stepBuilderFactory.get("weeklyBoxOfficeStep")
                 .<WeeklyMovie, WeeklyMovie>chunk(CHUNKSIZE)
                 .reader(weeklyBoxOfficeReader())

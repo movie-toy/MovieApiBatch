@@ -30,7 +30,6 @@ public class MovieListJobConfig {
 
     @Bean
     public Job movieListJob(){
-        log.info("movieListJob Start!!!");
         return jobBuilderFactory.get("movieListJob")
                 .start(movieListStep())
                 .build();
@@ -38,7 +37,6 @@ public class MovieListJobConfig {
 
     @Bean
     public Step movieListStep(){
-        log.info("movieListStep Start!!!");
         return stepBuilderFactory.get("movieListStep")
                 .<MovieList, MovieList>chunk(CHUNKSIZE)
                 .reader(movieListReader())

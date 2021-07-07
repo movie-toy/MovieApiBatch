@@ -34,7 +34,6 @@ public class MovieInfoConfig {
 
     @Bean
     public Job movieInfoJob() {
-        log.info("movieInfoJob Start!!!");
         return jobBuilderFactory.get("movieInfoJob")
                 .start(movieInfoStep())
                 .build();
@@ -42,7 +41,6 @@ public class MovieInfoConfig {
 
     @Bean
     public Step movieInfoStep(){
-        log.info("movieInfoStep Start!!!");
         return stepBuilderFactory.get("movieInfoStep")
                 .<String, MovieInfo>chunk(CHUNKSIZE)
                 .reader(movieInfoReader())
@@ -57,7 +55,7 @@ public class MovieInfoConfig {
                 .name("movieInfoReader")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(CHUNKSIZE)
-                .queryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus = 'N' and m.id <= 10000")
+                .queryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus = 'N' and m.id <= 20000")
                 .build();
 
     }

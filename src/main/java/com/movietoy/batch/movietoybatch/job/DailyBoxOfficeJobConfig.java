@@ -35,7 +35,6 @@ public class DailyBoxOfficeJobConfig {
     // JobBuilderFactory를 통해서 tutorialJob을 생성
     @Bean
     public Job dailyBoxOfficeJob(){
-        log.info("dailyBoxOfficeJob Start!!!");
         return jobBuilderFactory.get("dailyBoxOfficeJob")
                 .start(dailyBoxOfficeStep())
                 .build();
@@ -44,7 +43,6 @@ public class DailyBoxOfficeJobConfig {
     // StepBuilderFactory를 통해서 tutorialStep을 생성
 /*    @Bean
     public Step dailyBoxOfficeStep() {
-        log.info("dailyBoxOfficeStep Start!!!");
         return stepBuilderFactory.get("dailyBoxOfficeStep")
                 //Tasklet 인터페이스 안에 excute 메소드 밖에없기때문에 람다식으로 변환 가능
                 //.tasklet(new movieToyApiTasklet())
@@ -58,7 +56,6 @@ public class DailyBoxOfficeJobConfig {
 
     @Bean
     public Step dailyBoxOfficeStep() {
-        log.info("dailyBoxOfficeStep Start!!!");
         return stepBuilderFactory.get("dailyBoxOfficeStep")
                 .<DailyMovie, DailyMovie>chunk(CHUNKSIZE)
                 .reader(dailyBoxOfficeReader())

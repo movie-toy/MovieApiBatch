@@ -20,7 +20,7 @@ import java.util.Map;
 @Component
 public class MovieApi {
     //발급키
-    public static String key = "aa70b0701d04d2ab017306b706c486d8";
+    public static String key = "f778bea14d8ca8349bc583598d1288e9";
 
     public static String getKey() {
         return key;
