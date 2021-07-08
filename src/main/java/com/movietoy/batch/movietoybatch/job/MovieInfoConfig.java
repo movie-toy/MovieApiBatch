@@ -10,6 +10,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
@@ -30,7 +31,7 @@ public class MovieInfoConfig {
     private final EntityManagerFactory entityManagerFactory;
     private final MovieApiService movieApiService;
     private final MovieInfoRepository movieInfoRepository;
-    private static final int CHUNKSIZE = 100;
+    private static final int CHUNKSIZE = 10;
 
     @Bean
     public Job movieInfoJob() {
@@ -50,14 +51,27 @@ public class MovieInfoConfig {
     }
 
     @Bean
+    @StepScope
     public JpaPagingItemReader<String> movieInfoReader() {
-        return new JpaPagingItemReaderBuilder<String>()
-                .name("movieInfoReader")
-                .entityManagerFactory(entityManagerFactory)
-                .pageSize(CHUNKSIZE)
-                .queryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus = 'N' and m.id <= 20000")
-                .build();
 
+        JpaPagingItemReader<String> reader = new JpaPagingItemReader<String>() {
+            @Override
+            public int getPage() {
+                return 0;
+            }
+        };
+        reader.setQueryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus IS NULL AND m.id <= 35000 ORDER BY m.id asc");
+        reader.setPageSize(CHUNKSIZE);
+        reader.setEntityManagerFactory(entityManagerFactory);
+        reader.setName("movieInfoReader");
+
+        return reader;
+//        return new JpaPagingItemReaderBuilder<String>()
+//                .name("movieInfoReader")
+//                .entityManagerFactory(entityManagerFactory)
+//                .pageSize(CHUNKSIZE)
+//                .queryString("SELECT m.movieCd FROM MovieList m ORDER BY m.Id asc")
+//                .build();
     }
 
     @Bean
