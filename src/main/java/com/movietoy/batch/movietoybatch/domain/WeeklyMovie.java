@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -86,4 +88,7 @@ public class WeeklyMovie {
 
     /*DB 저장 일자*/
     private String targetDt;
+
+    @CreationTimestamp
+    private LocalDateTime modification_date_time;
 }

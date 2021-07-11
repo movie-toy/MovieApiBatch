@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -66,6 +68,9 @@ public class MovieInfo {
     /*심의정보*/
     @Column(columnDefinition = "json")
     private String audits;
+
+    @CreationTimestamp
+    private LocalDateTime modification_date_time;
 
 
 }

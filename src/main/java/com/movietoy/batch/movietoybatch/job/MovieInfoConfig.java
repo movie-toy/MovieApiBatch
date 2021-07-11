@@ -31,7 +31,7 @@ public class MovieInfoConfig {
     private final EntityManagerFactory entityManagerFactory;
     private final MovieApiService movieApiService;
     private final MovieInfoRepository movieInfoRepository;
-    private static final int CHUNKSIZE = 10;
+    private static final int CHUNKSIZE = 100;
 
     @Bean
     public Job movieInfoJob() {
@@ -60,7 +60,7 @@ public class MovieInfoConfig {
                 return 0;
             }
         };
-        reader.setQueryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus IS NULL AND m.id <= 35000 ORDER BY m.id asc");
+        reader.setQueryString("SELECT m.movieCd FROM MovieList m WHERE m.batchStatus IS NULL ORDER BY m.id asc");
         reader.setPageSize(CHUNKSIZE);
         reader.setEntityManagerFactory(entityManagerFactory);
         reader.setName("movieInfoReader");

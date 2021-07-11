@@ -21,13 +21,13 @@ public class MovieApiService {
 
     public List<MovieList> selectAllMovieList() {
         List<MovieList> movieLists = new ArrayList<>();
-        int num=1;
-        while(true){
-            List<MovieList> movieList = movieApi.movieList(Integer.toString(num));
-            if(movieList.size() == 0) break;
-            movieLists.addAll(movieList);
-            num++;
-        }
+//        int num=1;
+//        while(true){
+//            List<MovieList> movieList = movieApi.movieList(Integer.toString(num));
+//            if(movieList.size() == 0) break;
+//            movieLists.addAll(movieList);
+//            num++;
+//        }
         return movieLists;
     }
 
