@@ -9,6 +9,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.context.annotation.Bean;
@@ -29,17 +30,18 @@ public class MovieListJobConfig {
     private static final int CHUNKSIZE = 100; //쓰기 단위인 청크사이즈
 
     @Bean
-    public Job movieListJob(){
+    public Job movieListJob() {
         return jobBuilderFactory.get("movieListJob")
                 .start(movieListStep())
                 .build();
     }
 
     @Bean
-    public Step movieListStep(){
+    public Step movieListStep() {
         return stepBuilderFactory.get("movieListStep")
                 .<MovieList, MovieList>chunk(CHUNKSIZE)
                 .reader(movieListReader())
+                .processor(movieListProcessor())
                 .writer(movieListWriter())
                 .build();
     }
@@ -51,7 +53,12 @@ public class MovieListJobConfig {
     }
 
     @Bean
-    public JpaItemWriter<MovieList> movieListWriter(){
+    public ItemProcessor<MovieList, MovieList> movieListProcessor() {
+        return movieList -> movieApiService.selectNewMovieList(movieList);
+    }
+
+    @Bean
+    public JpaItemWriter<MovieList> movieListWriter() {
         JpaItemWriter<MovieList> jpaItemWriter = new JpaItemWriter<>();
         jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
         return jpaItemWriter;
