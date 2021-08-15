@@ -1,7 +1,6 @@
 package com.movietoy.batch.movietoybatch.job;
 
 
-import com.movietoy.batch.movietoybatch.api.BoxOfficeApi;
 import com.movietoy.batch.movietoybatch.domain.WeeklyMovie;
 import com.movietoy.batch.movietoybatch.service.BoxOfficeApiService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.context.annotation.Bean;

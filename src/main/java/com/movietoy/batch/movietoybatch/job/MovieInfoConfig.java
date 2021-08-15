@@ -2,7 +2,6 @@ package com.movietoy.batch.movietoybatch.job;
 
 import com.movietoy.batch.movietoybatch.domain.MovieInfo;
 import com.movietoy.batch.movietoybatch.domain.MovieInfoRepository;
-import com.movietoy.batch.movietoybatch.domain.MovieList;
 import com.movietoy.batch.movietoybatch.service.MovieApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +11,8 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

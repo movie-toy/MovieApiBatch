@@ -1,6 +1,5 @@
 package com.movietoy.batch.movietoybatch.job;
 
-import com.movietoy.batch.movietoybatch.api.MovieApi;
 import com.movietoy.batch.movietoybatch.domain.MovieList;
 import com.movietoy.batch.movietoybatch.service.MovieApiService;
 import lombok.RequiredArgsConstructor;

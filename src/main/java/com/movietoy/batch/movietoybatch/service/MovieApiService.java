@@ -1,7 +1,10 @@
 package com.movietoy.batch.movietoybatch.service;
 
 import com.movietoy.batch.movietoybatch.api.MovieApi;
-import com.movietoy.batch.movietoybatch.domain.*;
+import com.movietoy.batch.movietoybatch.domain.MovieInfo;
+import com.movietoy.batch.movietoybatch.domain.MovieInfoRepository;
+import com.movietoy.batch.movietoybatch.domain.MovieList;
+import com.movietoy.batch.movietoybatch.domain.MovieListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
