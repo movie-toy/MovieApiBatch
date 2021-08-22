@@ -35,7 +35,7 @@ public class MovieApiService {
         return movieLists;
     }
 
-    //영호 상세정보
+    //영화 상세정보
     public MovieInfo selectMovieInfo(String movieCd) {
         //영화 리스트 batch상태 코드 값 Y로 변경 ( Y = 상세 데이터 넣음, NULL = 상세 데이터 안넣음 )
         MovieList movieList = movieListRepository.findByMovieCd(movieCd);

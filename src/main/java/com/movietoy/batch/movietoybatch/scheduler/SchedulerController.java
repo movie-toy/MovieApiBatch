@@ -82,7 +82,7 @@ public class SchedulerController {
         }
     }
 
-    @Scheduled(cron ="0 0 1 * * MON") //매주 월요일 01시에 실행
+    @Scheduled(cron ="0 0 1 * * *") //매일 01시에 실행
     public void executeMovieInfoJob () {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
