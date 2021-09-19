@@ -1,7 +1,7 @@
 package com.movietoy.batch.movietoybatch.scheduler;
 
 import com.movietoy.batch.movietoybatch.job.DailyBoxOfficeJobConfig;
-import com.movietoy.batch.movietoybatch.job.MovieInfoConfig;
+import com.movietoy.batch.movietoybatch.job.MovieInfoJobConfig;
 import com.movietoy.batch.movietoybatch.job.MovieListJobConfig;
 import com.movietoy.batch.movietoybatch.job.WeeklyBoxOfficeJobConfig;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class SchedulerController {
     private final WeeklyBoxOfficeJobConfig weeklyBoxOfficeJobConfig;
     private final DailyBoxOfficeJobConfig dailyBoxOfficeJobConfig;
     private final MovieListJobConfig movieListJobConfig;
-    private final MovieInfoConfig movieInfoConfig;
+    private final MovieInfoJobConfig movieInfoConfig;
     //Job을 실행하기 위한 클래스 주입
     private final JobLauncher jobLauncher;
 

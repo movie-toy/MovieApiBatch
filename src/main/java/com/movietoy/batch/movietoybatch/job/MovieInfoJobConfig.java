@@ -21,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class MovieInfoConfig {
+public class MovieInfoJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;

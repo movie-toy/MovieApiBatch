@@ -70,12 +70,16 @@ public class BoxOfficeApi {
             JSONArray parse_dailyBoxOfficeList = (JSONArray) parse_boxOfficeResult.get("dailyBoxOfficeList");
             for(int i=0; i<parse_dailyBoxOfficeList.size(); i++){
                 JSONObject dailyBoxOffice = (JSONObject) parse_dailyBoxOfficeList.get(i);
+
                 //JSON object -> Java Object(Entity) 변환
                 DailyMovie dailyMovie = objectMapper.readValue(dailyBoxOffice.toString(), DailyMovie.class);
-                //DB저장
+
+                //Entity 셋팅
                 dailyMovie.setTargetDt(targetDt);
                 dailyMovie.setBoxofficeType(boxofficeType);
                 dailyMovie.setShowRange(showRange);
+
+                //리스트에 추가
                 dailyBoxOfficeList.add(dailyMovie);
             }
         }catch(Exception e){
@@ -90,7 +94,7 @@ public class BoxOfficeApi {
 
         String weeklyResponse = "";
 
-        //전주 박스오피스 조회 ( 해당주는 안나옴.. )
+        //전주 박스오피스 조회 ( 이전의 주만 조회 가능 )
         LocalDateTime time = LocalDateTime.now().minusDays(7);
         String targetDt =  time.format(DateTimeFormatter.ofPattern("yyyMMdd"));
 
@@ -143,11 +147,14 @@ public class BoxOfficeApi {
                 JSONObject weeklyBoxOffice = (JSONObject) parse_weeklyBoxOfficeList.get(i);
                 //JSON object -> Java Object(Entity) 변환
                 WeeklyMovie weeklyMovie = objectMapper.readValue(weeklyBoxOffice.toString(), WeeklyMovie.class);
-                //DB저장
+
+                //Entity 셋팅
                 weeklyMovie.setTargetDt(targetDt);
                 weeklyMovie.setBoxofficeType(boxofficeType);
                 weeklyMovie.setShowRange(showRange);
                 weeklyMovie.setYearWeekTime(yearWeekTime);
+
+                //리스트에 추가
                 weeklyBoxOfficeList.add(weeklyMovie);
             }
         }catch(Exception e){
